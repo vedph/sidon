@@ -120,6 +120,14 @@ namespace sidon.Commands
                     document.Blocks.Add(new SidonBlock { Content = line });
                 }
             }
+
+            if (document != null)
+            {
+                ParseDocument(document);
+                Logger?.LogInformation($"Document: {document}");
+                yield return document;
+            }
+
             _eof = true;
         }
     }
