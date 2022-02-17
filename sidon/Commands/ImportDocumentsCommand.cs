@@ -28,13 +28,18 @@ namespace Sidon.Commands
             CommandArgument dbNameArgument = command.Argument("[dbName]",
                 "The target database name.");
 
+            CommandOption dryOption = command.Option("--dry|-d",
+                "Dry mode: do not write to database.",
+                CommandOptionType.NoValue);
+
             command.OnExecute(() =>
             {
                 options.Command = new ImportDocumentsCommand(
                     new ImportDocumentsCommandOptions(options)
                     {
                         InputFileMask = inputFileMaskArgument.Value,
-                        DatabaseName = dbNameArgument.Value
+                        DatabaseName = dbNameArgument.Value,
+                        IsDryMode = dryOption.HasValue()
                     });
                 return 0;
             });
@@ -45,6 +50,7 @@ namespace Sidon.Commands
             Console.WriteLine("IMPORT DOCUMENTS");
             Console.WriteLine("Input: " + _options.InputFileMask);
             Console.WriteLine("Database: " + _options.DatabaseName);
+            Console.WriteLine("Dry mode: " + (_options.IsDryMode ? "yes" : "no"));
 
             string inputDir = Path.GetDirectoryName(_options.InputFileMask) ?? "";
             int bookNr = 0;
@@ -86,5 +92,6 @@ namespace Sidon.Commands
 
         public string? InputFileMask { get; set; }
         public string? DatabaseName { get; set; }
+        public bool IsDryMode { get; set; }
     }
 }

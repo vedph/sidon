@@ -13,6 +13,8 @@ namespace Sidon.Commands
         private readonly ICadmusRepository _repository;
         private readonly Regex _ws;
 
+        public bool IsDryMode { get; set; }
+
         public SidonImporter(SidonReader reader, ICadmusRepository repository)
         {
             _reader = reader ?? throw new ArgumentNullException(nameof(reader));
@@ -77,7 +79,7 @@ namespace Sidon.Commands
                         i++;
                     }
                     IItem item = BuildItem(doc, ++nr, start, i - start);
-                    _repository.AddItem(item, true);
+                    if (!IsDryMode) _repository.AddItem(item, true);
                 }
 
                 if (cancel.IsCancellationRequested) break;

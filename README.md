@@ -29,3 +29,13 @@ Sidonius Constantio suo salutem.
   - a poetic paragraph starts with space(s) because it's indented. It may start with `^\s*\(\d+\)\s*` (verse number in brackets), which must be removed.
   - a special case of poetic paragraph starts with no space nor number, but is followed by a paragraph starting with 3 spaces. In this case it's the first verse of a distichon.
   - exceptions to these rules are marked with an initial character: `@`=poetry, `#`=prose.
+
+## CLI
+
+(1) dump for diagnostic purposes, e.g.:
+
+./sidon dump c:\users\dfusi\desktop\sid\sidon*.txt c:\users\dfusi\desktop\dump\
+
+(2) import into database, e.g.:
+
+./sidon import c:\users\dfusi\desktop\sid\sidon*.txt cadmus-sidon
