@@ -18,6 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Cadmus.General.Parts" Version="1.0.4" />
+    <PackageReference Include="Cadmus.Mongo" Version="2.5.3" />
     <PackageReference Include="Fusi.Tools" Version="1.1.17" />
     <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />

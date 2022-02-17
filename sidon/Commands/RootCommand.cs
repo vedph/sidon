@@ -15,6 +15,7 @@ namespace Sidon.Commands
         {
             // configure all the app commands here
             app.Command("dump", c => DumpDocumentsCommand.Configure(c, options));
+            app.Command("import", c => ImportDocumentsCommand.Configure(c, options));
 
             app.OnExecute(() =>
             {

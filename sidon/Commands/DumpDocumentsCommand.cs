@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.CommandLineUtils;
-using sidon.Commands;
+using Sidon.Services;
 using System.Text;
 
 namespace Sidon.Commands
@@ -70,11 +70,11 @@ namespace Sidon.Commands
                     new FileStream(outputPath, FileMode.Create, FileAccess.Write,
                     FileShare.Read), Encoding.UTF8);
 
-                SidonReader reader = new(textReader)
+                SidonReader reader = new(textReader, bookNr)
                 {
-                    Logger = _options.AppOptions.Logger
+                    Logger = _options.Logger
                 };
-                foreach (SidonDocument document in reader.Read(bookNr))
+                foreach (SidonDocument document in reader.Read())
                 {
                     textWriter.WriteLine($"=== {document.Book}.{document.Number}: "
                         + document.Title);

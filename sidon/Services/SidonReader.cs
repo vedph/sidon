@@ -3,22 +3,24 @@ using Microsoft.Extensions.Logging;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace sidon.Commands
+namespace Sidon.Services
 {
     internal class SidonReader
     {
         private readonly TextReader _reader;
+        private readonly int _bookNumber;
         private bool _eof;
         private readonly Regex _headerRegex;
         private readonly Regex _nrRegex;
 
         public ILogger? Logger { get; set; }
 
-        public SidonReader(TextReader reader)
+        public SidonReader(TextReader reader, int bookNumber)
         {
             _reader = reader ?? throw new ArgumentNullException(nameof(reader));
             _headerRegex = new Regex(@"^EPISTULA\s+([IVXLC]+)");
             _nrRegex = new Regex(@"^(\d+)\.\s*");
+            _bookNumber = bookNumber;
         }
 
         private void ParseDocument(SidonDocument document)
@@ -64,7 +66,7 @@ namespace sidon.Commands
             }
         }
 
-        public IEnumerable<SidonDocument> Read(int bookNumber)
+        public IEnumerable<SidonDocument> Read()
         {
             if (_eof) yield break;
 
@@ -91,7 +93,7 @@ namespace sidon.Commands
                     // next is EPISTULA n
                     document = new SidonDocument
                     {
-                        Book = bookNumber
+                        Book = _bookNumber
                     };
                     line = _reader.ReadLine();
                     lineNr++;

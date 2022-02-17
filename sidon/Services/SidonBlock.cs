@@ -1,4 +1,4 @@
-﻿namespace sidon.Commands
+﻿namespace Sidon.Services
 {
     internal class SidonBlock
     {
