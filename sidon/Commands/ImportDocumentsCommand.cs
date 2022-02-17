@@ -75,7 +75,10 @@ namespace Sidon.Commands
                 {
                     Logger = _options.Logger
                 };
-                SidonImporter importer = new(reader, repository);
+                SidonImporter importer = new(reader, repository)
+                {
+                    IsDryMode = _options.IsDryMode
+                };
                 importer.Import(CancellationToken.None, new Progress<ProgressReport>(
                     r => Console.WriteLine(r.Message)));
             }

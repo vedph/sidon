@@ -61,11 +61,11 @@ namespace Sidon.Commands
         public void Import(CancellationToken cancel,
             IProgress<ProgressReport>? progress = null)
         {
-            int nr = 0;
             ProgressReport? report = progress != null? new() : null;
 
             foreach (SidonDocument doc in _reader.Read())
             {
+                int itemNr = 0;
                 int i = 0;
                 while (i < doc.Blocks.Count)
                 {
@@ -78,8 +78,12 @@ namespace Sidon.Commands
                     {
                         i++;
                     }
-                    IItem item = BuildItem(doc, ++nr, start, i - start);
-                    if (!IsDryMode) _repository.AddItem(item, true);
+                    IItem item = BuildItem(doc, ++itemNr, start, i - start);
+                    if (!IsDryMode)
+                    {
+                        _repository.AddItem(item, true);
+                        _repository.AddPart(item.Parts[0], true);
+                    }
                 }
 
                 if (cancel.IsCancellationRequested) break;

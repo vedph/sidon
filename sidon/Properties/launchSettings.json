@@ -2,7 +2,7 @@
   "profiles": {
     "sidon": {
       "commandName": "Project",
-      "commandLineArgs": "import c:\\users\\dfusi\\desktop\\sid\\sidon*.txt cadmus-sidon -d"
+      "commandLineArgs": "import c:\\users\\dfusi\\desktop\\sid\\sidon*.txt cadmus-sidon"
     }
   }
 }
