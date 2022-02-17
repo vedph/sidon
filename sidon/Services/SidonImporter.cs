@@ -5,7 +5,7 @@ using Fusi.Tools;
 using Sidon.Services;
 using System.Text.RegularExpressions;
 
-namespace Sidon.Commands
+namespace Sidon.Services
 {
     internal sealed class SidonImporter
     {
@@ -25,7 +25,7 @@ namespace Sidon.Commands
 
         private IItem BuildItem(SidonDocument doc, int nr, int start, int count)
         {
-            string title = $"{doc.Book}.{doc.Number}#{nr} {doc.Title}";
+            string title = $"{doc.Book}_{doc.Number:000}_{nr:000} {doc.Title}";
 
             IItem item = new Item
             {
@@ -33,7 +33,7 @@ namespace Sidon.Commands
                 Description = title,
                 FacetId = "text",
                 GroupId = $"{doc.Book}-{doc.Number:000}",
-                SortKey = $"{doc.Book}-{doc.Number:000}-{nr:000}",
+                // SortKey = $"{doc.Book}-{doc.Number:000}-{nr:000}",
                 CreatorId = "zeus",
                 UserId = "zeus"
             };
@@ -65,6 +65,13 @@ namespace Sidon.Commands
 
             foreach (SidonDocument doc in _reader.Read())
             {
+                if (progress != null)
+                {
+                    report!.Count++;
+                    report.Message = $"--- EP {doc.Book}.{doc.Number}";
+                    progress.Report(report);
+                }
+
                 int itemNr = 0;
                 int i = 0;
                 while (i < doc.Blocks.Count)
@@ -84,15 +91,14 @@ namespace Sidon.Commands
                         _repository.AddItem(item, true);
                         _repository.AddPart(item.Parts[0], true);
                     }
+                    if (progress != null)
+                    {
+                        report!.Message = item.ToString();
+                        progress.Report(report);
+                    }
                 }
 
                 if (cancel.IsCancellationRequested) break;
-                if (progress != null)
-                {
-                    report!.Count++;
-                    report.Message = $"{doc.Book}.{doc.Number}";
-                    progress.Report(report);
-                }
             }
         }
     }
