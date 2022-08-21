@@ -39,3 +39,9 @@ Sidonius Constantio suo salutem.
 (2) import into database, e.g.:
 
 ./sidon import c:\users\dfusi\desktop\sid\sidon*.txt cadmus-sidon
+
+Note: the quickest way to create a new database is starting Cadmus Sidon API to let it seed its metadata, and then delete all the items/parts collections and run this import command.
+
+## History
+
+- 2022-08-21: added asterisk in imported item title and flags=8 when its block(s) contain poetry.

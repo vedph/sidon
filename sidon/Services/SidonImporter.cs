@@ -2,7 +2,7 @@
 using Cadmus.Core.Storage;
 using Cadmus.General.Parts;
 using Fusi.Tools;
-using Sidon.Services;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace Sidon.Services
@@ -25,7 +25,9 @@ namespace Sidon.Services
 
         private IItem BuildItem(SidonDocument doc, int nr, int start, int count)
         {
-            string title = $"{doc.Book}_{doc.Number:000}_{nr:000} {doc.Title}";
+            bool poetic = doc.Blocks[start].IsPoetic;
+            string title = $"{doc.Book}_{doc.Number:000}_{nr:000} {doc.Title}" +
+                (poetic ? "*" : "");
 
             IItem item = new Item
             {
@@ -35,15 +37,18 @@ namespace Sidon.Services
                 GroupId = $"{doc.Book}-{doc.Number:000}",
                 // SortKey = $"{doc.Book}-{doc.Number:000}-{nr:000}",
                 CreatorId = "zeus",
-                UserId = "zeus"
+                UserId = "zeus",
+                Flags = poetic ? 8 : 0
             };
 
-            TokenTextPart part = new();
-            part.Citation = $"{doc.Book}-{doc.Number} #{nr}" +
-                (doc.Blocks[start].IsPoetic ? "*" : "");
-            part.ItemId = item.Id;
-            part.CreatorId = item.CreatorId;
-            part.UserId = item.UserId;
+            TokenTextPart part = new()
+            {
+                Citation = $"{doc.Book}-{doc.Number} #{nr}" +
+                    (poetic ? "*" : ""),
+                ItemId = item.Id,
+                CreatorId = item.CreatorId,
+                UserId = item.UserId
+            };
 
             for (int i = 0; i < count; i++)
             {
@@ -86,6 +91,7 @@ namespace Sidon.Services
                         i++;
                     }
                     IItem item = BuildItem(doc, ++itemNr, start, i - start);
+                    Debug.Assert(item.Parts.Count > 0);
                     if (!IsDryMode)
                     {
                         _repository.AddItem(item, true);
