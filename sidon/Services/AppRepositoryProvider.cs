@@ -64,7 +64,7 @@ namespace Sidon.Services
             repository.Configure(new MongoCadmusRepositoryOptions
             {
                 ConnectionString = string.Format(
-                    _configuration.GetConnectionString("Default"),
+                    _configuration.GetConnectionString("Default")!,
                     database)
             });
 

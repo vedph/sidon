@@ -44,4 +44,5 @@ Note: the quickest way to create a new database is starting Cadmus Sidon API to 
 
 ## History
 
+- 2022-11-10: upgraded to NET 7.
 - 2022-08-21: added asterisk in imported item title and flags=8 when its block(s) contain poetry.
